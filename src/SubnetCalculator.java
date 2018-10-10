@@ -21,6 +21,8 @@ public class SubnetCalculator {
 	private int maxSubnets;
 	private int hostsPerSubnet;
 	
+	private Scanner addressInput = new Scanner(System.in).useDelimiter(".");
+	
 	public SubnetCalculator() {
 		// TODO ipv4 address initialization goes here?
 	}
@@ -43,12 +45,13 @@ public class SubnetCalculator {
 		
 	}
 
+	// TODO: issue: does the main class or does the subCalc hold instances of the addresses?
 	public void print() {
 		System.out.println();
 		System.out.println("Network class: " + netClass);
-		System.out.println("IPv4 Address: " + ipAddr.getaddress());
-		System.out.println("Binary Address: " + ipAddr.getBinaryAddress());
-		System.out.println("Hex Address: " + ipAddr.getHexAddress());
+		//System.out.println("IPv4 Address: " + ipAddr.getaddress());
+		//System.out.println("Binary Address: " + ipAddr.getBinaryAddress());
+		//System.out.println("Hex Address: " + ipAddr.getHexAddress());
 		
 		//System.out.println("Subnet Mask: " + subnetMask.toString());
 		//System.out.println("Network address: " + networkAddr);
@@ -61,6 +64,36 @@ public class SubnetCalculator {
 	public String[] calcSubnetMaskOptionsList() {
 		return null; 
 		
+	}
+	
+	// TODO fix input - remove test values
+	public void setAddress(IPv4Address addr, String addrType) {
+		String addressByte;
+		//for (int i=0; i<4; i++) {
+			//do { TODO: input validation for each byte, as they are entered(?)
+//			System.out.print("Enter a valid" + addrType + " in the format X.X.X.X : ");
+//			addressByte = addressInput.next(); 
+//			addr.setAddressComponent(addressByte, 0);
+//			addressByte = addressInput.next(); 
+//			addr.setAddressComponent(addressByte, 1);
+//			addressByte = addressInput.next(); 
+//			addr.setAddressComponent(addressByte, 2);
+//			addressByte = addressInput.next(); 
+//			addr.setAddressComponent(addressByte, 3);
+			//} while()
+		//}
+		if(addrType.equals("IP address")) {
+			addr.setAddressComponent("192", 0);
+			addr.setAddressComponent("182", 1);
+			addr.setAddressComponent("172", 2);
+			addr.setAddressComponent("162", 3);
+		}
+		if(addrType.equals("subnet mask")) {
+			addr.setAddressComponent("255", 0);
+			addr.setAddressComponent("255", 1);
+			addr.setAddressComponent("255", 2);
+			addr.setAddressComponent("0", 3);
+		}
 	}
 	
 	public void setNetClass(String netClass) {
@@ -81,45 +114,37 @@ public class SubnetCalculator {
 		SubnetCalculator calc = new SubnetCalculator();
 		IPv4Address ipAddress = new IPv4Address();
 		IPv4Address subnetMask = new IPv4Address();
+		IPv4Address networkAddress = new IPv4Address();
 		
 		Scanner genInput = new Scanner(System.in);
 		Scanner addressInput = new Scanner(System.in).useDelimiter("."); 
 
-		// prompt for network class
-		String netClassStr;
-		do { // allow only "A", "B", or "C" as input for network class; break from loop only after verification
-			System.out.print("Enter a valid network class (A, B, or C): ");
-			netClassStr = genInput.next();
-		} while (!(netClassStr.equalsIgnoreCase("A") || netClassStr.equalsIgnoreCase("B") || netClassStr.equalsIgnoreCase("C")) ); 
-		calc.setNetClass(netClassStr);
+		// set network class
+//		String netClassStr;
+//		do { // allow only "A", "B", or "C" as input for network class; break from loop only after verification
+//			System.out.print("Enter a valid network class (A, B, or C): ");
+//			netClassStr = genInput.next();
+//		} while (!(netClassStr.equalsIgnoreCase("A") || netClassStr.equalsIgnoreCase("B") || netClassStr.equalsIgnoreCase("C")) ); 
+//		calc.setNetClass(netClassStr);
 		
-		// prompt for IP address
-		String addressByte;
-		for(int i=0; i<4; i++) { // address has 4 components which are stored as 4 separate array elements
-		//do {
-			System.out.print("Enter a valid IP Address in the format X.X.X.X : ");
-			addressByte = addressInput.next(); 
-			ipAddress.setAddressComponent(addressByte, i);
-		//} while();
-			//TODO add input validation		
-		}
+		// set IP address
+		calc.setAddress(ipAddress, "IP address");
+				
+		// set subnet mask
+		calc.setAddress(subnetMask, "subnet mask");
 		
+		//TODO deal with the issue of listing possible subnet masks based on input
 		
-		System.out.println("Enter a valid subnet mask, or press \"L\" to choose from a list: ");
-		//TODO ....this
-
-		// once valid subnet mask is entered....
-		String subnetByte;
-		for(int i=0; i<4; i++) { // address has 4 components which are stored as 4 separate array elements
-		//do {
-			System.out.print("Enter a valid IP Address in the format X.X.X.X : ");
-			subnetByte = addressInput.next(); 
-			ipAddress.setAddressComponent(subnetByte, i);
-		//} while();
-			//TODO add input validation		
-		}
+		// set network address
+		networkAddress = ipAddress.bitwiseAnd(subnetMask);
+		
+		System.out.println();
+		System.out.println("IPv4 Address: " + ipAddress.getAddress());
+		//System.out.println("Binary Address: " + ipAddress.getBinaryAddress());
+		System.out.println("Subnet Mask: " + subnetMask.getAddress());
 		
 		
+		System.out.println("Network Address: " + networkAddress.getAddress());
 
 	}
 

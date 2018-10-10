@@ -47,7 +47,7 @@ public class IPv4Address {
 		address[index] = Integer.parseInt(addrComponent);
 	}
 
-	public String getaddress() {
+	public String getAddress() {
 		return address[0]+"."+address[1]+"."+address[2]+"."+address[3];
 	}
 	
