@@ -10,6 +10,17 @@ public class IPv4Address {
 		addressBinary = new String[4]; //always has 4 8-bit components
 	}
 	
+	// calculate and return network address
+	public IPv4Address bitwiseAnd(IPv4Address subnetMask) {
+		IPv4Address result = new IPv4Address();
+		for(int i=0; i<4; i++) {
+			int resultByte;
+			resultByte = address[i] & subnetMask.getComponent(i);
+			result.setAddressComponent(resultByte, i);
+		}
+		return result;
+	}
+	
 	// convert any decimal address array(ints) to a binary address array(Strings)
 	public String[] decimalToBinary(int[] decimalAddr) {
 		String[] binaryAddr = new String[4];
@@ -22,6 +33,14 @@ public class IPv4Address {
 	// convert any binary address array (Strings) into a decimal address array(ints)
 	public static void binaryToDecimal() {
 		
+	}
+	
+	private int getComponent(int index) { // for use in the IPv4Address bitwise AND comparison method 
+		return address[index];
+	}
+	
+	public void setAddressComponent(int addrComponent, int index) {
+		address[index] = addrComponent;
 	}
 	
 	public void setAddressComponent(String addrComponent, int index) {

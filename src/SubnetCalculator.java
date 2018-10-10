@@ -7,11 +7,11 @@ public class SubnetCalculator {
 	
 	private char netClass;
 	private IPv4Address ipAddr;
+	private IPv4Address subnetMask;
 	private IPv4Address networkAddr;
 	private IPv4Address hostAddrMin;
 	private IPv4Address hostAddrMax;
 	private IPv4Address[] possibleSubnetMasks;
-	private String subnetMask;
 	private String wildCardMask;
 	private String binaryMask;
 	private String broadcastAddress;
@@ -20,6 +20,28 @@ public class SubnetCalculator {
 	private int maskBits;
 	private int maxSubnets;
 	private int hostsPerSubnet;
+	
+	public SubnetCalculator() {
+		// TODO ipv4 address initialization goes here?
+	}
+	
+	//TODO test this method
+	public void calculateNetworkAddress() {
+		networkAddr = ipAddr.bitwiseAnd(subnetMask);
+	}
+	
+	// given a binary subnet mask and an ip address, both as strings,
+	// determine the network part of the address and the host part of the address
+	public void calcAddressComponents(String subnetMask, String ipAddress) {
+		
+		int[] result = new int[ipAddress.length()];
+		
+		for(int i=0; i<ipAddress.length(); i++) {
+			result[i] = subnetMask.charAt(i) * ipAddress.charAt(i); //networkComponent = (subnetMask) AND (ipAddress)
+			System.out.print(result[i]);
+		}
+		
+	}
 
 	public void print() {
 		System.out.println();
@@ -41,19 +63,6 @@ public class SubnetCalculator {
 		
 	}
 	
-	// given a binary subnet mask and an ip address, both as strings,
-	// determine the network part of the address and the host part of the address
-	public void calcAddressComponents(String subnetMask, String ipAddress) {
-		
-		int[] result = new int[ipAddress.length()];
-		
-		for(int i=0; i<ipAddress.length(); i++) {
-			result[i] = subnetMask.charAt(i) * ipAddress.charAt(i); //networkComponent = (subnetMask) AND (ipAddress)
-			System.out.print(result[i]);
-		}
-		
-	}
-	
 	public void setNetClass(String netClass) {
 		this.netClass = netClass.charAt(0);
 	}
@@ -67,8 +76,11 @@ public class SubnetCalculator {
 
 	public static void main(String[] args) {
 		
+		//TODO move the address initialization to their own methods (?)
+		
 		SubnetCalculator calc = new SubnetCalculator();
 		IPv4Address ipAddress = new IPv4Address();
+		IPv4Address subnetMask = new IPv4Address();
 		
 		Scanner genInput = new Scanner(System.in);
 		Scanner addressInput = new Scanner(System.in).useDelimiter("."); 
@@ -92,7 +104,21 @@ public class SubnetCalculator {
 			//TODO add input validation		
 		}
 		
-		//System.out.println("Enter a valid subnet mask, or press \"L\" to choose from a list: ");
+		
+		System.out.println("Enter a valid subnet mask, or press \"L\" to choose from a list: ");
+		//TODO ....this
+
+		// once valid subnet mask is entered....
+		String subnetByte;
+		for(int i=0; i<4; i++) { // address has 4 components which are stored as 4 separate array elements
+		//do {
+			System.out.print("Enter a valid IP Address in the format X.X.X.X : ");
+			subnetByte = addressInput.next(); 
+			ipAddress.setAddressComponent(subnetByte, i);
+		//} while();
+			//TODO add input validation		
+		}
+		
 		
 
 	}
