@@ -6,12 +6,11 @@ import java.net.UnknownHostException;
 public class SubnetCalculator {
 	
 	private char netClass;
-	private int[] ipAddr; 
-	private String networkAddr;
-	private String hostAddrMin;
-	private String hostAddrMax;
-	private String hexAddr;
-	private String[] possibleSubnetMasks;
+	private IPv4Address ipAddr;
+	private IPv4Address networkAddr;
+	private IPv4Address hostAddrMin;
+	private IPv4Address hostAddrMax;
+	private IPv4Address[] possibleSubnetMasks;
 	private String subnetMask;
 	private String wildCardMask;
 	private String binaryMask;
@@ -21,25 +20,18 @@ public class SubnetCalculator {
 	private int maskBits;
 	private int maxSubnets;
 	private int hostsPerSubnet;
-	private int firstOctetMin;
-	private int firstOctetMax;
-		
+
 	public void print() {
 		System.out.println();
 		System.out.println("Network class: " + netClass);
-		//System.out.println("IPv4 Address: " + ipAddr.toString());
+		System.out.println("IPv4 Address: " + ipAddr.getaddress());
+		System.out.println("Binary Address: " + ipAddr.getBinaryAddress());
+		System.out.println("Hex Address: " + ipAddr.getHexAddress());
+		
 		//System.out.println("Subnet Mask: " + subnetMask.toString());
 		//System.out.println("Network address: " + networkAddr);
 		//System.out.println("Host Address Range: " + hostAddrMin + " - " + hostAddrMax);
 		//System.out.println("Hex Address:" + hexAddr);
-		
-		// from when I tried to use InetAddress class incorrectly...might need this later...
-		//System.out.println("test: " + this.ipAddr.getHostAddress().toString());
-//		try {
-//			this.ipAddr.getByAddress("www.github.com", null);
-//		} catch (UnknownHostException e) {
-//			e.printStackTrace();
-//		}
 		
 	}
 	
@@ -76,6 +68,7 @@ public class SubnetCalculator {
 	public static void main(String[] args) {
 		
 		SubnetCalculator calc = new SubnetCalculator();
+		IPv4Address ipAddress = new IPv4Address();
 		
 		Scanner genInput = new Scanner(System.in);
 		Scanner addressInput = new Scanner(System.in).useDelimiter("."); 
@@ -89,14 +82,17 @@ public class SubnetCalculator {
 		calc.setNetClass(netClassStr);
 		
 		// prompt for IP address
-		String ipAddressStr;
+		String addressByte;
+		for(int i=0; i<4; i++) { // address has 4 components which are stored as 4 separate array elements
 		//do {
 			System.out.print("Enter a valid IP Address in the format X.X.X.X : ");
-			ipAddressStr = addressInput.next(); 
+			addressByte = addressInput.next(); 
+			ipAddress.setAddressComponent(addressByte, i);
 		//} while();
 			//TODO add input validation		
+		}
 		
-		System.out.println("Enter a valid subnet mask, or press \"L\" to choose from a list: ");
+		//System.out.println("Enter a valid subnet mask, or press \"L\" to choose from a list: ");
 		
 
 	}
